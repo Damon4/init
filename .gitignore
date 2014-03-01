@@ -1,0 +1,4 @@
+.idea
+node_modules
+/css/mixin.css
+/css/project/mixin_project.css

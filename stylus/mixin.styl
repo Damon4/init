@@ -1,0 +1,36 @@
+@import "nib"
+
+// rewrite native nib mixins (add moz prefix)
+box-shadow()
+  vendor('box-shadow', arguments, only: webkit moz official)
+
+border-radius()
+  pos = ()
+  augmented = false
+  importance = arguments[length(arguments) - 1] == !important ? !important : unquote('')
+
+  for args in arguments
+    for arg in args
+      if arg is a 'ident'
+        append(pos, arg)
+        augmented = true
+      else
+        append(pos, arg)
+        if augmented
+          -apply-border-radius(pos, importance)
+          pos = ()
+  vendor('border-radius', pos, only: webkit moz official) unless augmented
+
+PATH_IMAGE = '../../img/'
+PATH_IMAGE_STATIC = '/img/'
+
+bi(name, rt = no-repeat, type = png) {
+  $path = PATH_IMAGE name '.' type
+  background-image: url($path);
+  background-repeat: rt;
+}
+bis(name, rt = no-repeat, type = png) {
+  $path = PATH_IMAGE_STATIC name '.' type
+  background-image: url($path);
+  background-repeat: rt;
+}
